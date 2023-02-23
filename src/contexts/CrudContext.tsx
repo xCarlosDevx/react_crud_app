@@ -45,10 +45,20 @@ export const crudReducer = (
 ): ITaskList => {
   switch (action.type) {
     case "getTask":
+      fetch("http://localhost:3000/task", {
+        mode: "no-cors",
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+
+      fetch("https://jsonplaceholder.typicode.com/posts/1", {})
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => console.log(data));
       let dataBd: any;
       dataBd = localStorage.getItem("task_bd");
       state = JSON.parse(dataBd);
-      console.log(dataBd, state);
       return {
         ...state,
       };
@@ -58,12 +68,26 @@ export const crudReducer = (
         ...state,
       };
     case "addTask":
+      fetch("https://jsonplaceholder.typicode.com/posts", {
+        mode: "no-cors",
+        method: "POST",
+        body: JSON.stringify({
+          title: action.data.nameTask,
+          body: action.data.descriptionTask,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((response) => response.json());
       return {
         ...state,
         tasks: [...state.tasks, action.data],
       };
 
     case "removeTask":
+      fetch("https://jsonplaceholder.typicode.com/posts/" + action.data.id, {
+        method: "Delete",
+      });
       state.tasks.forEach((item, index) => {
         if (item.id == action.data.id) {
           state.tasks.splice(index, 1);
@@ -75,6 +99,18 @@ export const crudReducer = (
         tasks: [...state.tasks],
       };
     case "editTask":
+      fetch("https://jsonplaceholder.typicode.com/posts/" + action.data.id, {
+        method: "PUT",
+        body: JSON.stringify({
+          title: action.data.nameTask,
+          body: action.data.descriptionTask,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data));
       state.tasks.forEach((item) => {
         if (item.id == action.data.id) {
           item.descriptionTask = action.data.descriptionTask;
@@ -109,6 +145,7 @@ const crudInitialState: ITaskList = {
 };
 
 export const CrudContextProv = ({ children }: props) => {
+  const [getData, setData] = useState({});
   const [taskState, dispatch] = useReducer(crudReducer, crudInitialState);
   const [taskName, setName] = useState("");
   const [taskDescription, setDescription] = useState("");
