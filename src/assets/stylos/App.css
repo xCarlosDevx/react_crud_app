@@ -110,15 +110,11 @@ h4 {
   background-color: rgb(37, 143, 2);
   padding: 5px 10px 5px 10px;
 }
+
 .textContainer input {
   padding: 5px 20px 5px 20px;
   margin: 5px 0 5px 0;
 }
-.buttonContainer input {
-  padding: 5px 15px 5px 15px;
-  margin: 10px 30px 5px 30px;
-}
-
 .inputs__container {
   position: absolute;
 }
@@ -129,12 +125,24 @@ h4 {
   position: fixed;
 }
 .buttonContainer {
-  right: 33px;
   top: 160px;
   position: fixed;
   display: flex;
-  flex-flow: column;
+  flex-flow: row wrap;
   justify-content: center;
+}
+.buttonContainer input {
+  padding: 5px 15px 5px 15px;
+  margin: 10px 10px 0 10px;
+}
+.buttonContainer .button__one {
+  flex-basis: 1;
+}
+.buttonContainer .button__two {
+  flex-basis: 1;
+}
+.buttonContainer .button__three {
+  flex-basis: 100%;
 }
 .task__content input {
   border-radius: 5px;
